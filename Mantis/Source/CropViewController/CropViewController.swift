@@ -29,6 +29,12 @@ public protocol CropViewControllerProtocol: class {
     func cropViewControllerDidCanceledCroping(_ vc: CropViewController)
 }
 
+extension CropViewControllerProtocol {
+    func cropViewControllerDidCanceledCroping(_ vc: CropViewController) {
+        vc.dismiss(animated: true, completion: nil)
+    }
+}
+
 public enum CropViewControllerMode {
     case normal
     case customizable    

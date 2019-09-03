@@ -45,12 +45,15 @@ pod 'Mantis', '~> 0.28'
 let cropViewController = Mantis.cropViewController(image: <Your Image>)
 ```
 
-* The caller needs to conform CropViewControllerProtocal
+* The caller needs to conform CropViewControllerProtocol
 ```swift
-public protocol CropViewControllerProtocal: class {
-    func didGetCroppedImage(image: UIImage)
+public protocol CropViewControllerProtocol: class {
+    func cropViewController(_ vc: CropViewController, didGetCroppedImage image: UIImage)
+    func cropViewControllerDidCanceledCroping(_ vc: CropViewController) //optional
 }
 ```
+
+* The caller needs to control presenting and dismissing of CropViewController. Dismissing can be controlled inside CropViewControllerProtocol methods by using 'vc'. If you didn't define method cropViewControllerDidCanceledCroping it will automatically dismiss.
 
 * CropViewController has two modes:
 
