@@ -24,8 +24,9 @@
 
 import UIKit
 
-public protocol CropViewControllerProtocal: class {
-    func didGetCroppedImage(image: UIImage)
+public protocol CropViewControllerProtocol: class {
+    func cropViewController(_ vc: CropViewController, didGetCroppedImage image: UIImage)
+    func cropViewControllerDidCanceledCroping(_ vc: CropViewController)
 }
 
 public enum CropViewControllerMode {
@@ -35,7 +36,7 @@ public enum CropViewControllerMode {
 
 public class CropViewController: UIViewController {
     
-    public weak var delegate: CropViewControllerProtocal?
+    public weak var delegate: CropViewControllerProtocol?
     
     private var orientation: UIInterfaceOrientation = .unknown
         
@@ -155,7 +156,7 @@ public class CropViewController: UIViewController {
     }
     
     private func handleCancel() {
-        dismiss(animated: true, completion: nil)
+        delegate?.cropViewControllerDidCanceledCroping(self)
     }
     
     private func resetRatioButton() {
@@ -222,9 +223,7 @@ public class CropViewController: UIViewController {
             return
         }
         
-        dismiss(animated: true) {
-            self.delegate?.didGetCroppedImage(image: image)
-        }
+        delegate?.cropViewController(self, didGetCroppedImage: image)
     }
 }
 
@@ -294,7 +293,7 @@ extension CropViewController: CropViewDelegate {
 extension CropViewController {
     public func crop() {
         if let image = cropView?.crop() {
-            delegate?.didGetCroppedImage(image: image)
+            delegate?.cropViewController(self, didGetCroppedImage: image)
         }        
     }
 }
